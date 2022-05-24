@@ -25,13 +25,19 @@ app.post("/account", (req, res) => {
     return res.status(200).json({ customers });
 })
 
-app.get("/statement/:cpf", (req, res) => {
-    const { cpf } = req.params;
+app.get("/statement", (req, res) => {
+    const { cpf } = req.headers;
 
     const customer = customers.find(customer => customer.cpf === cpf);
 
-    return res.json(customer.statement);
+    if (!customer) {
+        return res.status(400).json({ Error: "Customer not found!" });
+    }
+
+    return res.json(customer);
 
 })
+
+
 
 app.listen(3333);
