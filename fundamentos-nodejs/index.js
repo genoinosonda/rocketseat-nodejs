@@ -1,4 +1,5 @@
 const express = require("express");
+const { restart } = require("nodemon");
 const { v4: uuidv4 } = require("uuid");
 
 const app = express();
@@ -146,6 +147,15 @@ app.delete("/account", verifyIfExistsAccountCPF, (req, res) => {
     customers.splice(customer, 1);
 
     return res.status(200).json(customers);
+})
+
+app.get("/balance", verifyIfExistsAccountCPF, (req, res) => {
+
+    const { customer } = req;
+
+    const balance = getBalance(customer.statement);
+
+    return res.status(201).json(balance);
 })
 
 app.listen(3333);
